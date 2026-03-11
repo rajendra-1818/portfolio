@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Amazon to DaVita — Sri Rajendra Dabburi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f7f4ef;
+    --cream: #ede9e1;
+    --accent: #c84b31;
+    --accent2: #2b4f8c;
+    --muted: #7a7065;
+    --rule: #d4cfc6;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 18px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 100;
+  }
+  .masthead-brand {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .masthead-links {
+    display: flex; gap: 28px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .masthead-links a { color: inherit; text-decoration: none; }
+  .masthead-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 92vh;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-left {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--rule);
+  }
+  .hero-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 420px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .hero-meta strong { display: block; color: var(--ink); font-size: 0.85rem; margin-bottom: 2px; }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .hero-visual {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px;
+    position: relative;
+  }
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-family: var(--serif);
+    font-size: clamp(8rem, 15vw, 16rem);
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.05);
+    padding: 28px 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.3s;
+  }
+  .hero-stat:hover { background: rgba(200,75,49,0.15); }
+  .hero-stat-num {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .hero-stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* ── ARTICLE ── */
+  .article-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .article-columns {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 80px;
+    padding: 80px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── PROSE ── */
+  .prose { max-width: 680px; }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .drop-cap::first-letter {
+    font-family: var(--serif);
+    font-size: 5.2rem;
+    font-weight: 900;
+    float: left;
+    line-height: 0.78;
+    margin-right: 10px;
+    margin-top: 8px;
+    color: var(--accent);
+  }
+
+  .prose p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin-bottom: 1.6rem;
+    color: #1a1a1a;
+  }
+
+  .prose h2 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 3rem 0 1.2rem;
+    color: var(--ink);
+  }
+
+  .prose h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 400;
+    margin: 2rem 0 0.8rem;
+    color: var(--accent2);
+  }
+
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 20px 28px;
+    margin: 2.4rem 0;
+    background: var(--cream);
+  }
+  blockquote p {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .code-block {
+    background: var(--ink);
+    color: #a8d8a8;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    padding: 24px 28px;
+    margin: 2rem 0;
+    border-radius: 2px;
+    overflow-x: auto;
+    line-height: 1.7;
+  }
+  .code-block .comment { color: rgba(255,255,255,0.3); }
+  .code-block .keyword { color: #f9a875; }
+  .code-block .string { color: #b5e4fa; }
+
+  .callout {
+    background: linear-gradient(135deg, #2b4f8c 0%, #1a3366 100%);
+    color: #fff;
+    padding: 32px 36px;
+    margin: 2.4rem 0;
+  }
+  .callout-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 10px;
+  }
+  .callout p {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #fff;
+    margin: 0;
+  }
+
+  .lesson-card {
+    border: 1px solid var(--rule);
+    padding: 28px 32px;
+    margin: 1.6rem 0;
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .lesson-card:hover {
+    border-color: var(--accent);
+    box-shadow: 4px 4px 0 var(--accent);
+  }
+  .lesson-num {
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    letter-spacing: 0.1em;
+  }
+  .lesson-card h4 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .lesson-card p {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding-top: 8px; }
+
+  .sidebar-section {
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    margin-bottom: 48px;
+  }
+  .sidebar-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--muted);
+  }
+  .sidebar-section p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .tech-tag {
+    display: inline-block;
+    border: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    margin: 3px 2px;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .tech-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    cursor: default;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: start;
+  }
+  .timeline-year {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    padding-top: 3px;
+    font-weight: 500;
+  }
+  .timeline-content strong {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+  }
+  .timeline-content span {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* ── DIVIDER ORNAMENT ── */
+  .ornament {
+    text-align: center;
+    margin: 2.5rem 0;
+    color: var(--rule);
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+  }
+  .footer-name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .footer p { font-size: 0.85rem; line-height: 1.7; }
+  .footer-link {
+    display: block;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: var(--accent); }
+  .footer-col-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 16px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-left > * {
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .hero-tag    { animation-delay: 0.1s; }
+  .hero-title  { animation-delay: 0.25s; }
+  .hero-subtitle { animation-delay: 0.4s; }
+  .hero-meta   { animation-delay: 0.55s; }
+
+  .hero-stat {
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .hero-stat:nth-child(1) { animation-delay: 0.5s; }
+  .hero-stat:nth-child(2) { animation-delay: 0.65s; }
+  .hero-stat:nth-child(3) { animation-delay: 0.8s; }
+  .hero-stat:nth-child(4) { animation-delay: 0.95s; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { min-height: 360px; }
+    .article-columns { grid-template-columns: 1fr; }
+    .masthead, .article-wrapper, .footer { padding: 20px; }
+    .hero-left { padding: 48px 24px; }
+    .footer { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-brand">Sri Rajendra Dabburi</div>
+  <nav class="masthead-links">
+    <a href="#">Engineering</a>
+    <a href="#">Career</a>
+    <a href="https://www.linkedin.com/in/sri-rajendra/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/rajendra-1818" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Personal Essay · Engineering & Career</div>
+    <h1 class="hero-title">
+      Two Companies.<br>
+      One <em>Lesson</em> I Keep<br>
+      Learning.
+    </h1>
+    <p class="hero-subtitle">
+      From building cloud microservices at Amazon to modernizing clinical systems at DaVita — and what AI changed about everything in between.
+    </p>
+    <div class="hero-meta">
+      <div><strong>Sri Rajendra Dabburi</strong>Software Engineer</div>
+      <div><strong>8 min read</strong>Engineering + Career</div>
+      <div><strong>2025</strong>Overland Park, KS</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-bg-text">Java</div>
+      <div class="hero-stat-grid">
+        <div class="hero-stat">
+          <div class="hero-stat-num">3+</div>
+          <div class="hero-stat-label">Years Production Java</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">2</div>
+          <div class="hero-stat-label">Tier-1 Companies</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">6+</div>
+          <div class="hero-stat-label">Services Modernized</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">∞</div>
+          <div class="hero-stat-label">Things Still to Learn</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLE BODY -->
+<div class="article-wrapper">
+  <div class="article-columns">
+
+    <!-- PROSE -->
+    <article class="prose">
+
+      <div class="section-label">Part One · Amazon</div>
+
+      <p class="drop-cap">
+        When I joined Amazon as a Software Development Engineer in 2022, I thought I knew what building software meant. I had a CS degree, a decent GPA, and a head full of data structures. What I didn't have was any real sense of what it meant to write code that millions of people depend on — code where a bad deploy at 2am isn't a learning experience, it's a production incident.
+      </p>
+
+      <p>
+        My first few months at Amazon were humbling in the best possible way. The systems were massive. The codebase was old in some places and aggressively modern in others. And the expectations around reliability, observability, and ownership were unlike anything I'd seen in academic projects or internships.
+      </p>
+
+      <blockquote>
+        <p>"You don't really understand distributed systems until you've been paged for one at midnight. Then you understand them very quickly."</p>
+      </blockquote>
+
+      <p>
+        I was working on backend microservices deployed on AWS — EC2, S3, Lambda — and the work was genuinely exciting. I was writing RESTful APIs, integrating cloud-native services, and learning what fault tolerance actually looks like in practice versus in a textbook. CloudWatch became my best friend. Logs became my primary language.
+      </p>
+
+      <h3>The thing nobody tells you about AWS at scale</h3>
+
+      <p>
+        Everyone talks about how powerful AWS is. What they don't talk about as much is how easy it is to build something fragile on top of it if you're not deliberate. Lambda functions that time out under load. EC2 configurations that work fine in staging and collapse in production. I learned that cloud efficiency isn't automatic — it's something you architect for, test for, and constantly revisit.
+      </p>
+
+      <div class="code-block">
+<span class="comment">// What "fault tolerant" actually meant in practice</span>
+<span class="keyword">@Retryable</span>(value = {ServiceException.<span class="keyword">class</span>}, maxAttempts = 3)
+<span class="keyword">public</span> ResponseEntity&lt;PatientData&gt; fetchWithFallback(String id) {
+    <span class="keyword">try</span> {
+        <span class="keyword">return</span> downstreamClient.fetch(id);
+    } <span class="keyword">catch</span> (ServiceException e) {
+        log.warn(<span class="string">"Downstream failure, attempt logged to CloudWatch"</span>);
+        <span class="keyword">throw</span> e; <span class="comment">// let @Retryable handle it</span>
+    }
+}
+      </div>
+
+      <p>
+        It was also at Amazon where I first understood what it means to own a service — not just write it. You write it, you deploy it, you monitor it, you get paged for it. That ownership mindset changed how I approach every line of code I write.
+      </p>
+
+      <div class="ornament">— ✦ —</div>
+
+      <div class="section-label">Part Two · DaVita</div>
+
+      <h2>When the Stakes Are Human</h2>
+
+      <p>
+        I joined DaVita in August 2023, and the shift was immediate. At Amazon, a bug might slow down a checkout flow or delay a package notification. At DaVita — a company that provides kidney dialysis to hundreds of thousands of patients — a broken system means something different. It means a missed communication. A delayed report. A clinical workflow that grinds to a halt.
+      </p>
+
+      <p>
+        That weight is not a bad thing. It sharpens you.
+      </p>
+
+      <p>
+        My first major project was one of the most technically dense things I'd worked on: migrating a suite of enterprise microservices from Java 11 to 21 and Spring Boot 2.x to 3.x. On paper, it sounds like a routine upgrade. In practice, it meant combing through years of accumulated technical debt, undocumented dependencies, and framework-level breaking changes that nobody had bothered to write down.
+      </p>
+
+      <div class="callout">
+        <div class="callout-label">The Hard Part</div>
+        <p>Migrating six production services across two major Java versions isn't a weekend project. It's a negotiation — with the codebase, with the framework, with your own assumptions about how things work.</p>
+      </div>
+
+      <p>
+        What made it manageable was treating it like an investigation rather than a task list. Every compile error was a clue. Every deprecated API was a breadcrumb. By the time we were done, the services were leaner, startup latency was down, and the team had documentation that actually reflected reality.
+      </p>
+
+      <h3>Building things that talk to patients</h3>
+
+      <p>
+        One of the projects I'm most proud of at DaVita was building a real-time patient messaging system using Infobip APIs and QR-based routing. Before this, patient communications ran on overnight batch cycles — meaning a change made at 9am wouldn't reach a patient until the following morning at the earliest. We replaced that with a live pipeline. It sounds like a backend problem. But on the other side of it is a patient who gets their appointment reminder when it actually matters.
+      </p>
+
+      <p>
+        I also built automated PDF generation modules integrated with Cloud CMS, and wired up Tableau APIs so operations teams could pull their own analytics without waiting on an engineering ticket. These weren't glamorous features. But they were the kind of work that makes the rest of the organization move faster — and that's always been the work I find most satisfying.
+      </p>
+
+      <div class="ornament">— ✦ —</div>
+
+      <div class="section-label">Part Three · The AI Shift</div>
+
+      <h2>The Tool That Changed My Workflow</h2>
+
+      <p>
+        Somewhere in the middle of the DaVita migration work, I started using AI tools seriously — not as a novelty, but as a genuine part of how I work. And it changed things in ways I didn't fully anticipate.
+      </p>
+
+      <p>
+        The obvious benefit is speed. Tracing a Kafka consumer failure that used to take an hour of log spelunking now takes minutes when you can describe the symptoms clearly and iterate on hypotheses fast. Spring Boot upgrade errors that required digging through changelogs and Stack Overflow threads now resolve in a single well-framed conversation.
+      </p>
+
+      <p>
+        But the less obvious shift is cognitive. AI tools reward clarity. The better you can articulate a problem — the constraints, the context, the expected behavior — the better the output you get. And that feedback loop has made me a more deliberate engineer. I write clearer design docs now. I think through interfaces more carefully upfront. I've started treating vagueness in my own thinking as a problem to fix, not a detail to defer.
+      </p>
+
+      <blockquote>
+        <p>The engineer who uses AI well isn't the one who types the least. It's the one who thinks the clearest.</p>
+      </blockquote>
+
+      <p>
+        I've also changed how I look at repetitive work. If a task is well-defined enough that I can describe it precisely, I start asking whether I should be doing it manually at all. That question — "is this automatable?" — used to feel like a luxury. Now it feels like a professional obligation.
+      </p>
+
+      <div class="ornament">— ✦ —</div>
+
+      <div class="section-label">Lessons</div>
+
+      <h2>What I'd Tell Myself at Day One</h2>
+
+      <div class="lesson-card">
+        <div class="lesson-num">01</div>
+        <h4>Observability is not optional</h4>
+        <p>You can't debug what you can't see. Instrument everything from day one. CloudWatch, Dynatrace, Kibana — pick your stack and make it a first-class citizen, not an afterthought.</p>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">02</div>
+        <h4>Boring upgrades are load-bearing</h4>
+        <p>The Java 11 to 21 migration wasn't glamorous. Neither was the Spring Boot upgrade. But the systems that ran on top of them got faster, cheaper, and safer. The invisible work is often the most important.</p>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">03</div>
+        <h4>Clarity is a technical skill</h4>
+        <p>Whether you're writing a design doc, a Jira ticket, or a prompt to an AI tool — the ability to articulate a problem precisely is as valuable as any framework expertise. Invest in it.</p>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">04</div>
+        <h4>Ownership changes everything</h4>
+        <p>Writing code is easy. Owning a service — monitoring it, improving it, taking the 2am page — is where engineers grow. Seek ownership, even when it's uncomfortable.</p>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">05</div>
+        <h4>The domain matters</h4>
+        <p>Healthcare software is different from e-commerce software. Not just technically — the stakes are different, the culture is different, the meaning is different. Pay attention to where you're building, not just what.</p>
+      </div>
+
+      <div class="ornament">— ✦ —</div>
+
+      <p>
+        I'm actively looking for senior backend and platform engineering roles where the problems are hard and the systems matter. If any of this resonated — I'd love to connect.
+      </p>
+
+      <p style="margin-top: 2rem;">
+        <strong>Sri Rajendra Dabburi</strong><br>
+        <span style="color: var(--muted); font-size: 0.9rem;">
+          Backend Engineer · Ex-Amazon · DaVita · Java · Spring Boot · AWS · GCP<br>
+          <a href="https://www.linkedin.com/in/sri-rajendra/" style="color: var(--accent2); text-decoration: none;">linkedin.com/in/sri-rajendra</a>
+        </span>
+      </p>
+
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">About the Author</div>
+        <p>Backend Software Engineer with 3+ years at Amazon and DaVita. Open to senior backend engineering roles.</p>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Career Timeline</div>
+        <div class="timeline-item">
+          <div class="timeline-year">2018</div>
+          <div class="timeline-content">
+            <strong>UCM</strong>
+            <span>B.S. Computer Science, Cum Laude</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2022</div>
+          <div class="timeline-content">
+            <strong>Amazon SDE</strong>
+            <span>AWS microservices, cloud-native APIs</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2023</div>
+          <div class="timeline-content">
+            <strong>DaVita</strong>
+            <span>Clinical systems, Java modernization</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Now</div>
+          <div class="timeline-content">
+            <strong>DaVita · Present</strong>
+            <span>Open to senior SWE roles</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Core Stack</div>
+        <div>
+          <span class="tech-tag">Java 21</span>
+          <span class="tech-tag">Spring Boot</span>
+          <span class="tech-tag">Kafka</span>
+          <span class="tech-tag">AWS</span>
+          <span class="tech-tag">GCP</span>
+          <span class="tech-tag">Docker</span>
+          <span class="tech-tag">PostgreSQL</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Kubernetes</span>
+          <span class="tech-tag">OAuth 2.0</span>
+          <span class="tech-tag">REST APIs</span>
+          <span class="tech-tag">Keycloak</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Certifications</div>
+        <p style="font-size:0.82rem; line-height:1.9; color: var(--muted);">
+          Building with the Claude API<br>
+          Claude with Amazon Bedrock<br>
+          DevOps with AWS<br>
+          Fundamentals of ML & AI
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>
+    <div class="footer-name">Sri Rajendra Dabburi</div>
+    <p>Backend Software Engineer. Building scalable systems that matter. Open to senior SWE roles in 2025.</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Connect</div>
+    <a class="footer-link" href="https://www.linkedin.com/in/sri-rajendra/" target="_blank">LinkedIn →</a>
+    <a class="footer-link" href="https://github.com/rajendra-1818" target="_blank">GitHub →</a>
+    <a class="footer-link" href="mailto:rajendradabburi@gmail.com">Email →</a>
+  </div>
+  <div>
+    <div class="footer-col-title">Topics in this post</div>
+    <a class="footer-link" href="#">Backend Engineering</a>
+    <a class="footer-link" href="#">Java & Spring Boot</a>
+    <a class="footer-link" href="#">AI & Developer Tools</a>
+    <a class="footer-link" href="#">Career Growth</a>
+  </div>
+</footer>
+
+</body>
+</html>
